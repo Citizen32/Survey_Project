@@ -18,8 +18,10 @@ passport.use(
         clientSecret: keys.googleClientSecret,
         callbackURL: '/auth/google/callback'
     },
-    accessToken => {
-        console.log(accessToken);
+    (accessToken, refreshToken, profile, done) => {
+        console.log('accessToken', accessToken);
+        console.log('refresh token', refreshToken);
+        console.log('profile', profile); 
     })
 );
 
@@ -30,6 +32,10 @@ app.get(
     })
 );
 
+app.get(
+    '/auth/google/callback/',
+    passport.authenticate('google')
+);
 
 // THIS CONST SPECIFIES WHERE OUR APPLICATION IS RUNNING, EITHER HEROKU'S ENVIROMENT (PRODUCTION) PORT OR LOCAL HOST (DEVELOPMENT) 
 const PORT = process.env.PORT || 8080;
